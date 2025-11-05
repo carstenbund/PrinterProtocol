@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Label Layout Editor — scleral_v4</title>
+<style>
+body {
+  font-family: system-ui, sans-serif;
+  display: flex;
+  gap: 1rem;
+  background: #f2f2f2;
+  margin: 0;
+  padding: 1rem;
+}
+#controls {
+  width: 240px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.75rem;
+  box-shadow: 0 0 6px rgba(0,0,0,0.1);
+  font-size: 13px;
+}
+#controls input {
+  width: 100%;
+  margin-bottom: 6px;
+  padding: 3px 4px;
+}
+.label-template {
+  position: relative;
+  width: 639.37px;
+  height: 639.37px;
+  
+  background: url('background.jpg') center center / cover no-repeat;
+  border: 1px solid #aaa;
+
+.field {
+  position: absolute;
+  color: #222;
+  cursor: move;
+  user-select: none;
+  transform-origin: center center;
+}
+.field.selected {
+  outline: 1px dashed red;
+}
+.grid-label {
+  position: absolute;
+  font-size: 10px;
+  color: #666;
+  font-family: monospace;
+}
+</style>
+</head>
+<body>
+
+<div id="controls">
+  <h4>Element Controls</h4>
+  <label>Name</label><input id="fldName" readonly>
+  <label>X (mm)</label><input id="fldX">
+  <label>Y (mm)</label><input id="fldY">
+  <label>Size (pt)</label><input id="fldSize">
+  <button id="applyBtn">Apply</button>
+  <button id="exportBtn">Export JSON</button>
+  <textarea id="jsonOut"
+    style="font-family: monospace; font-size:11px; height:220px;
+           width:100%; background:#fafafa; border:1px solid #ddd;
+           padding:4px; white-space: pre;"></textarea>
+</div>
+
+<div class="label-template" id="canvas"></div>
+
+<script>
+const DPI = 203;
+const MM_TO_DOTS = DPI / 25.4;
+const LABEL_MM = 80;
+const LABEL_PX = LABEL_MM * MM_TO_DOTS;
+
+function mmToPx(mm){ return mm * MM_TO_DOTS; }
+function pxToMm(px){ return px / MM_TO_DOTS; }
+function printerToCssY(yMm){ return LABEL_PX - mmToPx(yMm); }
+function cssToPrinterY(cssY){ return pxToMm(LABEL_PX - cssY); }
+
+const canvas = document.getElementById('canvas');
+const controls = {
+  name: document.getElementById('fldName'),
+  x: document.getElementById('fldX'),
+  y: document.getElementById('fldY'),
+  size: document.getElementById('fldSize'),
+  apply: document.getElementById('applyBtn'),
+  export: document.getElementById('exportBtn'),
+  out: document.getElementById('jsonOut')
+};
+
+let selected = null;
+let currentTemplate = null;
+
+// Helper accessors
+function getGroupByName(name) {
+  return currentTemplate?.groups?.find(g => g.name === name);
+}
+function getGroupOffsetX(name) {
+  const g = getGroupByName(name);
+  return g ? (g.offsetX || 0) : 0;
+}
+function getOriginalField(groupName, fieldName) {
+  const g = getGroupByName(groupName);
+  if (!g) return null;
+  return g.fields.find(f => f.name === fieldName) || null;
+}
+
+// --- Direction handling helper ---
+function applyDirectionStyle(el, dir) {
+  el.style.transform = '';
+  el.style.writingMode = 'horizontal-tb';
+  el.style.transformOrigin = 'center center';
+
+  switch (dir) {
+    case 2:
+      el.style.writingMode = 'vertical-lr';
+      break;
+    case 3:
+      el.style.transform = 'rotate(180deg)';
+      el.style.transformOrigin = 'center center';
+      break;
+    case 4:
+      el.style.transform = 'rotate(-90deg)';
+      el.style.transformOrigin = 'left bottom';
+      break;
+    default:
+      el.style.writingMode = 'horizontal-tb';
+  }
+}
+
+// ---------- Render Elements ----------
+function renderLabel(tpl){
+  canvas.innerHTML = '';
+  tpl.groups.forEach(group=>{
+    group.fields.forEach(field=>{
+      const el=document.createElement('div');
+      el.className='field';
+      el.dataset.name=field.name;
+      el.dataset.group=group.name;
+      el.dataset.x=field.x;
+      el.dataset.y=field.y;
+      el.dataset.size=field.size;
+      el.dataset.dir=field.dir || 1;
+
+      el.style.left=`${mmToPx(field.x+group.offsetX)}px`;
+      el.style.top=`${printerToCssY(field.y)}px`;
+      el.style.fontSize=`${field.size*2.5}px`;
+      el.textContent=field.text || field.name;
+
+      applyDirectionStyle(el, field.dir);
+
+      el.addEventListener('click',()=>selectElement(el));
+      makeDraggable(el);
+      canvas.appendChild(el);
+    });
+  });
+  drawGrid();
+}
+
+// ---------- Draw Grid ----------
+function drawGrid(){
+  for(let i=0;i<=LABEL_MM;i+=10){
+    const gx=document.createElement('div');
+    gx.className='grid-label';
+    gx.style.left=`${mmToPx(i)}px`;
+    gx.style.top='-14px';
+    gx.textContent=i;
+    canvas.appendChild(gx);
+    const gy=document.createElement('div');
+    gy.className='grid-label';
+    gy.style.left='-24px';
+    gy.style.top=`${printerToCssY(i)}px`;
+    gy.textContent=i;
+    canvas.appendChild(gy);
+  }
+}
+
+// ---------- Selection / Editing ----------
+function selectElement(el){
+  if(selected) selected.classList.remove('selected');
+  selected=el;
+  el.classList.add('selected');
+  controls.name.value=el.dataset.name;
+  controls.x.value=el.dataset.x;
+  controls.y.value=el.dataset.y;
+  controls.size.value=el.dataset.size;
+}
+
+// ---------- Apply ----------
+controls.apply.onclick = () => {
+  const jsonText = controls.out.value.trim();
+
+  if (jsonText) {
+    try {
+      const parsed = JSON.parse(jsonText);
+      const tpl = parsed.LabelTemplate ? parsed.LabelTemplate : parsed;
+      if (!tpl || !tpl.groups) throw new Error('Invalid template JSON');
+      currentTemplate = tpl;
+      renderLabel(currentTemplate);
+      controls.out.style.borderColor = '#ddd';
+      controls.out.value = JSON.stringify({ LabelTemplate: currentTemplate }, null, 2);
+    } catch (e) {
+      controls.out.style.borderColor = 'red';
+      console.warn('Invalid JSON', e);
+    }
+    return;
+  }
+
+  if (!selected) return;
+  const gx = parseFloat(controls.x.value);
+  const gy = parseFloat(controls.y.value);
+  const sz = parseFloat(controls.size.value);
+
+  const groupName = selected.dataset.group;
+  const offsetXmm = getGroupOffsetX(groupName);
+
+  selected.dataset.x = gx;
+  selected.dataset.y = gy;
+  selected.dataset.size = sz;
+  selected.style.left = `${mmToPx(gx + offsetXmm)}px`;
+  selected.style.top = `${printerToCssY(gy)}px`;
+  selected.style.fontSize = `${sz * 1.33}px`;
+};
+
+// ---------- Dragging ----------
+function makeDraggable(el){
+  let offsetX, offsetY;
+  el.addEventListener('mousedown', e => {
+    e.preventDefault();
+    offsetX = e.offsetX;
+    offsetY = e.offsetY;
+
+    const groupName = el.dataset.group;
+    const groupOffsetMm = getGroupOffsetX(groupName);
+
+    document.onmousemove = e2 => {
+      const rect = canvas.getBoundingClientRect();
+      const xPx = e2.clientX - rect.left - offsetX;
+      const yPx = e2.clientY - rect.top  - offsetY;
+
+      el.style.left = `${xPx}px`;
+      el.style.top  = `${yPx}px`;
+
+      const absXmm = pxToMm(xPx);
+      const yMm = cssToPrinterY(yPx);
+      const localXmm = absXmm - groupOffsetMm;
+
+      el.dataset.x = localXmm.toFixed(1);
+      el.dataset.y = yMm.toFixed(1);
+
+      controls.x.value = el.dataset.x;
+      controls.y.value = el.dataset.y;
+    };
+
+    document.onmouseup = () => { document.onmousemove = null; };
+  });
+}
+
+// ---------- Export ----------
+controls.export.onclick = () => {
+  const exportTpl = JSON.parse(JSON.stringify(currentTemplate));
+  const byGroup = new Map();
+  canvas.querySelectorAll('.field').forEach(el => {
+    const gname = el.dataset.group;
+    if (!byGroup.has(gname)) byGroup.set(gname, []);
+    byGroup.get(gname).push({
+      ...(getOriginalField(gname, el.dataset.name) || {}),
+      name: el.dataset.name,
+      x: parseFloat(el.dataset.x),
+      y: parseFloat(el.dataset.y),
+      size: parseFloat(el.dataset.size),
+      dir: parseInt(el.dataset.dir || '1', 10)
+    });
+  });
+
+  exportTpl.groups = exportTpl.groups.map(g => ({
+    ...g,
+    fields: byGroup.get(g.name) || []
+  }));
+
+  const payload = { LabelTemplate: exportTpl };
+  controls.out.value = JSON.stringify(payload, null, 2);
+  controls.out.style.borderColor = '#ddd';
+};
+
+// Example JSON inline (replace with your parsed JSON)
+const templateJSON = {
+  "LabelTemplate": {
+    "name": "scleral_v4",
+    "width": 80,
+    "height": 80,
+    "units": "mm",
+    "baseFont": "Swiss 721 Bold BT",
+    "dpi": 203,
+    "meta": {
+      "author": "Carsten Bund",
+      "version": "4.0-mm",
+      "date": "2025-11-03",
+      "description": "Millimetre-based scleral label layout derived from historical BASIC template (203 dpi reference). Uses a 3-panel structure: Box panel (0–20 mm), Right lens panel (24–49 mm), Left lens panel (54–79 mm). Total label height: 70 mm @203 dpi. Origin (0,0) is bottom-left; Y increases upward. Lens sub-grid updated with 2025-11 layout per PD41 spec sheet.",
+      "units": "mm",
+      "dpiReference": 203,
+      "conversionNote": "One dot = 25.4 / DPI mm. All x/y offsets expressed in mm and converted to printer dots at render time."
+    },
+    "groups": [
+      {
+        "name": "box",
+        "offsetX": 0,
+        "fields": [
+          {
+            "type": "Field",
+            "name": "NAAM",
+            "size": 10,
+            "align": 7,
+            "dir": 4,
+            "x": 4.8,
+            "y": 15.7
+          },
+          {
+            "type": "Field",
+            "name": "REFER",
+            "size": 8,
+            "align": 4,
+            "dir": 4,
+            "x": 11,
+            "y": 15.3
+          },
+          {
+            "type": "Field",
+            "name": "KLANTNR",
+            "size": 8,
+            "align": 4,
+            "dir": 4,
+            "x": 14,
+            "y": 48.8
+          },
+          {
+            "type": "Field",
+            "name": "BONNR",
+            "size": 8,
+            "align": 4,
+            "dir": 4,
+            "x": 10.1,
+            "y": 48.7
+          },
+          {
+            "type": "Barcode",
+            "name": "UDI",
+            "barcodeType": "DATAMATRIX",
+            "width": 2,
+            "ratio": 1,
+            "height": 3,
+            "size": 14,
+            "x": 14,
+            "y": 28.3,
+            "dir": 4
+          },
+          {
+            "type": "Field",
+            "name": "RGT",
+            "size": 10,
+            "align": 4,
+            "dir": 4,
+            "x": 11.6,
+            "y": 67.5
+          },
+          {
+            "type": "Field",
+            "name": "LFT",
+            "size": 10,
+            "align": 4,
+            "dir": 4,
+            "x": 18.1,
+            "y": 68.1
+          }
+        ]
+      },
+      {
+        "name": "right",
+        "offsetX": 29,
+        "fields": [
+          {
+            "type": "Field",
+            "name": "RGT",
+            "size": 5,
+            "align": 6,
+            "dir": 1,
+            "x": 16.9,
+            "y": 29.1
+          },
+          {
+            "type": "Field",
+            "name": "NAAM",
+            "size": 8,
+            "align": 5,
+            "dir": 1,
+            "x": 6.2,
+            "y": 32.2
+          },
+          {
+            "type": "Field",
+            "name": "RGT2",
+            "size": 9,
+            "align": 4,
+            "dir": 1,
+            "x": 6,
+            "y": 71.9
+          },
+          {
+            "type": "Field",
+            "name": "VLTRLBL",
+            "size": 6,
+            "align": 4,
+            "dir": 1,
+            "x": -0.7,
+            "y": 25.4,
+            "text": "VLT"
+          },
+          {
+            "type": "Field",
+            "name": "VLTR",
+            "size": 5,
+            "align": 6,
+            "dir": 1,
+            "x": 5.2,
+            "y": 25.7
+          },
+          {
+            "type": "Field",
+            "name": "RADRLBL",
+            "size": 6,
+            "align": 4,
+            "dir": 1,
+            "x": -0.8,
+            "y": 23.2,
+            "text": "RAD"
+          },
+          {
+            "type": "Field",
+            "name": "RADR",
+            "size": 5,
+            "align": 6,
+            "dir": 1,
+            "x": 5,
+            "y": 23.3
+          },
+          {
+            "type": "Field",
+            "name": "DPTRLBL",
+            "size": 6,
+            "align": 4,
+            "dir": 1,
+            "x": -0.8,
+            "y": 20.4,
+            "text": "PWR"
+          },
+          {
+            "type": "Field",
+            "name": "DPTR",
+            "size": 5,
+            "align": 6,
+            "dir": 1,
+            "x": 5.3,
+            "y": 20.4
+          },
+          {
+            "type": "Field",
+            "name": "DIARLBL",
+            "size": 6,
+            "align": 6,
+            "dir": 1,
+            "x": 11.4,
+            "y": 25.4,
+            "text": "DIA"
+          },
+          {
+            "type": "Field",
+            "name": "DIAR",
+            "size": 5,
+            "align": 6,
+            "dir": 1,
+            "x": 16.7,
+            "y": 25.7
+          },
+          {
+            "type": "Field",
+            "name": "SCLRRLBL",
+            "size": 6,
+            "align": 6,
+            "dir": 1,
+            "x": 11.7,
+            "y": 22.6,
+            "text": "SC"
+          },
+          {
+            "type": "Field",
+            "name": "SCLR",
+            "size": 6,
+            "align": 6,
+            "dir": 1,
+            "x": 16.3,
+            "y": 22.9
+          },
+          {
+            "type": "Field",
+            "name": "LZRRLBL",
+            "size": 6,
+            "align": 6,
+            "dir": 1,
+            "x": 11,
+            "y": 36.8,
+            "text": "-"
+          },
+          {
+            "type": "Field",
+            "name": "LZRR",
+            "size": 6,
+            "align": 6,
+            "dir": 1,
+            "x": 15.8,
+            "y": 20.1
+          },
+          {
+            "type": "Field",
+            "name": "LOTRLBL",
+            "size": 6,
+            "align": 4,
+            "dir": 1,
+            "x": -2.5,
+            "y": 16.1,
+            "text": ""
+          },
+          {
+            "type": "Field",
+            "name": "LOTR",
+            "size": 6,
+            "align": 6,
+            "dir": 1,
+            "x": 2.8,
+            "y": 16.6
+          },
+          {
+            "type": "Field",
+            "name": "DATUMRLBL",
+            "size": 6,
+            "align": 4,
+            "dir": 1,
+            "x": 9.4,
+            "y": 16.2,
+            "text": "EXP"
+          },
+          {
+            "type": "Field",
+            "name": "DATUMR",
+            "size": 6,
+            "align": 6,
+            "dir": 1,
+            "x": 13.9,
+            "y": 16.6
+          },
+          {
+            "type": "Field",
+            "name": "IDR",
+            "size": 8,
+            "align": 6,
+            "dir": 1,
+            "x": 16,
+            "y": 50.3
+          },
+          {
+            "type": "Barcode",
+            "name": "UDI",
+            "barcodeType": "DATAMATRIX",
+            "width": 2,
+            "ratio": 1,
+            "height": 3,
+            "size": 20,
+            "x": -3.1,
+            "y": 32.3,
+            "dir": 1
+          }
+        ]
+      },
+      {
+        "name": "left",
+        "offsetX": 58,
+        "fields": [
+          {
+            "type": "Field",
+            "name": "LFT",
+            "size": 5,
+            "align": 6,
+            "dir": 1,
+            "x": 16.9,
+            "y": 29.1
+          },
+          {
+            "type": "Field",
+            "name": "NAAM",
+            "size": 8,
+            "align": 5,
+            "dir": 1,
+            "x": 7.9,
+            "y": 32.7
+          },
+          {
+            "type": "Field",
+            "name": "LFT2",
+            "size": 9,
+            "align": 4,
+            "dir": 1,
+            "x": 7.3,
+            "y": 72.7
+          },
+          {
+            "type": "Field",
+            "name": "VLTLLBL",
+            "size": 6,
+            "align": 4,
+            "dir": 1,
+            "x": -0.6,
+            "y": 25.4,
+            "text": "VLT"
+          },
+          {
+            "type": "Field",
+            "name": "VLTL",
+            "size": 5,
+            "align": 6,
+            "dir": 1,
+            "x": 5.2,
+            "y": 25.7
+          },
+          {
+            "type": "Field",
+            "name": "RADLLBL",
+            "size": 6,
+            "align": 4,
+            "dir": 1,
+            "x": -0.8,
+            "y": 23.2,
+            "text": "RAD"
+          },
+          {
+            "type": "Field",
+            "name": "RADL",
+            "size": 5,
+            "align": 6,
+            "dir": 1,
+            "x": 5,
+            "y": 23.3
+          },
+          {
+            "type": "Field",
+            "name": "DPTLLBL",
+            "size": 6,
+            "align": 4,
+            "dir": 1,
+            "x": -0.8,
+            "y": 20.4,
+            "text": "PWR"
+          },
+          {
+            "type": "Field",
+            "name": "DPTL",
+            "size": 5,
+            "align": 6,
+            "dir": 1,
+            "x": 5.3,
+            "y": 20.4
+          },
+          {
+            "type": "Field",
+            "name": "DIALLBL",
+            "size": 6,
+            "align": 6,
+            "dir": 1,
+            "x": 11.4,
+            "y": 25.4,
+            "text": "DIA"
+          },
+          {
+            "type": "Field",
+            "name": "DIAL",
+            "size": 5,
+            "align": 6,
+            "dir": 1,
+            "x": 16.7,
+            "y": 25.7
+          },
+          {
+            "type": "Field",
+            "name": "SCLRRLBL",
+            "size": 6,
+            "align": 6,
+            "dir": 1,
+            "x": 11.7,
+            "y": 22.6,
+            "text": "SC"
+          },
+          {
+            "type": "Field",
+            "name": "SCLL",
+            "size": 5,
+            "align": 6,
+            "dir": 1,
+            "x": 16.3,
+            "y": 22.9
+          },
+          {
+            "type": "Field",
+            "name": "LZRRLBL",
+            "size": 5,
+            "align": 6,
+            "dir": 1,
+            "x": 11,
+            "y": 36.8,
+            "text": "-"
+          },
+          {
+            "type": "Field",
+            "name": "LZRR",
+            "size": 5,
+            "align": 6,
+            "dir": 1,
+            "x": 15.5,
+            "y": 19.2
+          },
+          {
+            "type": "Field",
+            "name": "LOTRLBL",
+            "size": 6,
+            "align": 4,
+            "dir": 1,
+            "x": -1.4,
+            "y": 16.2,
+            "text": "LOT"
+          },
+          {
+            "type": "Field",
+            "name": "LOTR",
+            "size": 5,
+            "align": 6,
+            "dir": 1,
+            "x": 3.8,
+            "y": 16.7
+          },
+          {
+            "type": "Field",
+            "name": "DATUMRLBL",
+            "size": 5,
+            "align": 4,
+            "dir": 1,
+            "x": 10.5,
+            "y": 15.9,
+            "text": "EXP"
+          },
+          {
+            "type": "Field",
+            "name": "DATUMR",
+            "size": 6,
+            "align": 6,
+            "dir": 1,
+            "x": 14.7,
+            "y": 16.3
+          },
+          {
+            "type": "Field",
+            "name": "IDL",
+            "size": 8,
+            "align": 6,
+            "dir": 1,
+            "x": 16.9,
+            "y": 49.7
+          },
+          {
+            "type": "Barcode",
+            "name": "UDI",
+            "barcodeType": "DATAMATRIX",
+            "width": 2,
+            "ratio": 1,
+            "height": 3,
+            "size": 20,
+            "x": -3,
+            "y": 32.8,
+            "dir": 1
+          }
+        ]
+      }
+    ]
+  }
+};
+
+currentTemplate = templateJSON.LabelTemplate;
+renderLabel(currentTemplate);
+</script>
+</body>
+</html>

@@ -1,0 +1,522 @@
+<style>
+.label-template {
+  position: relative;
+  width:639.37px;
+  height:479.53px;
+  background:white;
+  font-family:'Swiss 721 Bold BT';
+  overflow:visible;
+  background-image:repeating-linear-gradient(to right, rgba(0, 0, 0, 0.08) 0, rgba(0, 0, 0, 0.08) 1px, transparent 1px, transparent 10.00px),repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.08) 0, rgba(0, 0, 0, 0.08) 1px, transparent 1px, transparent 10.00px),repeating-linear-gradient(to right, rgba(0, 0, 0, 0.18) 0, rgba(0, 0, 0, 0.18) 1px, transparent 1px, transparent 50.00px),repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.18) 0, rgba(0, 0, 0, 0.18) 1px, transparent 1px, transparent 50.00px);
+  background-color:#fff;
+}
+.label-grid-label {
+  position:absolute;
+  font-size:10px;
+  color:#555;
+  pointer-events:none;
+  font-family:monospace;
+}
+.label-grid-label.grid-x {
+  top:-14px;
+  transform:translateX(-50%);
+}
+.label-grid-label.grid-y {
+  left:-34px;
+  transform:translateY(50%);
+}
+.label-grid-axis {
+  position:absolute;
+  left:-34px;
+  top:-18px;
+  font-size:10px;
+  color:#333;
+  font-family:monospace;
+}
+.label-field-0 {
+  position:absolute;
+  left:0.00px;
+  top:279.72px;
+  font-size:28.19px;
+  text-align:left;
+  writing-mode: vertical-rl;
+}
+.label-field-1 {
+  position:absolute;
+  left:26.37px;
+  top:279.72px;
+  font-size:22.56px;
+  text-align:left;
+  writing-mode: vertical-rl;
+}
+.label-field-2 {
+  position:absolute;
+  left:26.37px;
+  top:199.80px;
+  font-size:22.56px;
+  text-align:left;
+  writing-mode: vertical-rl;
+}
+.label-field-3 {
+  position:absolute;
+  left:38.36px;
+  top:199.80px;
+  font-size:22.56px;
+  text-align:left;
+  writing-mode: vertical-rl;
+}
+.label-barcode-4 {
+  position:absolute;
+  left:52.75px;
+  top:159.84px;
+}
+.label-field-5 {
+  position:absolute;
+  left:12.79px;
+  top:159.84px;
+  font-size:28.19px;
+  text-align:left;
+  writing-mode: vertical-rl;
+}
+.label-field-6 {
+  position:absolute;
+  left:12.79px;
+  top:199.80px;
+  font-size:28.19px;
+  text-align:left;
+  writing-mode: vertical-rl;
+}
+.label-field-7 {
+  position:absolute;
+  left:381.22px;
+  top:102.30px;
+  font-size:14.10px;
+  text-align:right;
+}
+.label-field-8 {
+  position:absolute;
+  left:291.71px;
+  top:111.89px;
+  font-size:22.56px;
+  text-align:center;
+}
+.label-field-9 {
+  position:absolute;
+  left:343.66px;
+  top:111.89px;
+  font-size:25.38px;
+  text-align:left;
+}
+.label-field-10 {
+  position:absolute;
+  left:359.65px;
+  top:279.72px;
+  font-size:14.10px;
+  text-align:left;
+}
+.label-field-11 {
+  position:absolute;
+  left:359.65px;
+  top:259.74px;
+  font-size:16.92px;
+  text-align:right;
+}
+.label-field-12 {
+  position:absolute;
+  left:331.67px;
+  top:279.72px;
+  font-size:14.10px;
+  text-align:left;
+}
+.label-field-13 {
+  position:absolute;
+  left:331.67px;
+  top:259.74px;
+  font-size:16.92px;
+  text-align:right;
+}
+.label-field-14 {
+  position:absolute;
+  left:319.69px;
+  top:279.72px;
+  font-size:14.10px;
+  text-align:left;
+}
+.label-field-15 {
+  position:absolute;
+  left:319.69px;
+  top:259.74px;
+  font-size:16.92px;
+  text-align:right;
+}
+.label-field-16 {
+  position:absolute;
+  left:359.65px;
+  top:185.42px;
+  font-size:14.10px;
+  text-align:right;
+}
+.label-field-17 {
+  position:absolute;
+  left:359.65px;
+  top:125.48px;
+  font-size:16.92px;
+  text-align:right;
+}
+.label-field-18 {
+  position:absolute;
+  left:331.67px;
+  top:185.42px;
+  font-size:14.10px;
+  text-align:right;
+}
+.label-field-19 {
+  position:absolute;
+  left:331.67px;
+  top:125.48px;
+  font-size:16.92px;
+  text-align:right;
+}
+.label-field-20 {
+  position:absolute;
+  left:319.69px;
+  top:185.42px;
+  font-size:14.10px;
+  text-align:right;
+}
+.label-field-21 {
+  position:absolute;
+  left:319.69px;
+  top:125.48px;
+  font-size:16.92px;
+  text-align:right;
+}
+.label-field-22 {
+  position:absolute;
+  left:319.69px;
+  top:335.67px;
+  font-size:14.10px;
+  text-align:left;
+}
+.label-field-23 {
+  position:absolute;
+  left:359.65px;
+  top:335.67px;
+  font-size:16.92px;
+  text-align:right;
+}
+.label-field-24 {
+  position:absolute;
+  left:319.69px;
+  top:359.65px;
+  font-size:14.10px;
+  text-align:left;
+}
+.label-field-25 {
+  position:absolute;
+  left:359.65px;
+  top:359.65px;
+  font-size:16.92px;
+  text-align:right;
+}
+.label-field-26 {
+  position:absolute;
+  left:359.65px;
+  top:407.60px;
+  font-size:16.92px;
+  text-align:right;
+}
+.label-barcode-27 {
+  position:absolute;
+  left:299.70px;
+  top:127.87px;
+}
+.label-field-28 {
+  position:absolute;
+  left:613.00px;
+  top:102.30px;
+  font-size:14.10px;
+  text-align:right;
+}
+.label-field-29 {
+  position:absolute;
+  left:523.48px;
+  top:111.89px;
+  font-size:22.56px;
+  text-align:center;
+}
+.label-field-30 {
+  position:absolute;
+  left:575.43px;
+  top:111.89px;
+  font-size:25.38px;
+  text-align:left;
+}
+.label-field-31 {
+  position:absolute;
+  left:591.42px;
+  top:279.72px;
+  font-size:14.10px;
+  text-align:left;
+}
+.label-field-32 {
+  position:absolute;
+  left:591.42px;
+  top:259.74px;
+  font-size:16.92px;
+  text-align:right;
+}
+.label-field-33 {
+  position:absolute;
+  left:563.44px;
+  top:279.72px;
+  font-size:14.10px;
+  text-align:left;
+}
+.label-field-34 {
+  position:absolute;
+  left:563.44px;
+  top:259.74px;
+  font-size:16.92px;
+  text-align:right;
+}
+.label-field-35 {
+  position:absolute;
+  left:551.46px;
+  top:279.72px;
+  font-size:14.10px;
+  text-align:left;
+}
+.label-field-36 {
+  position:absolute;
+  left:551.46px;
+  top:259.74px;
+  font-size:16.92px;
+  text-align:right;
+}
+.label-field-37 {
+  position:absolute;
+  left:591.42px;
+  top:185.42px;
+  font-size:14.10px;
+  text-align:right;
+}
+.label-field-38 {
+  position:absolute;
+  left:591.42px;
+  top:125.48px;
+  font-size:16.92px;
+  text-align:right;
+}
+.label-field-39 {
+  position:absolute;
+  left:563.44px;
+  top:185.42px;
+  font-size:14.10px;
+  text-align:right;
+}
+.label-field-40 {
+  position:absolute;
+  left:563.44px;
+  top:125.48px;
+  font-size:16.92px;
+  text-align:right;
+}
+.label-field-41 {
+  position:absolute;
+  left:551.46px;
+  top:185.42px;
+  font-size:14.10px;
+  text-align:right;
+}
+.label-field-42 {
+  position:absolute;
+  left:551.46px;
+  top:125.48px;
+  font-size:16.92px;
+  text-align:right;
+}
+.label-field-43 {
+  position:absolute;
+  left:551.46px;
+  top:335.67px;
+  font-size:14.10px;
+  text-align:left;
+}
+.label-field-44 {
+  position:absolute;
+  left:591.42px;
+  top:335.67px;
+  font-size:16.92px;
+  text-align:right;
+}
+.label-field-45 {
+  position:absolute;
+  left:551.46px;
+  top:359.65px;
+  font-size:14.10px;
+  text-align:left;
+}
+.label-field-46 {
+  position:absolute;
+  left:591.42px;
+  top:359.65px;
+  font-size:16.92px;
+  text-align:right;
+}
+.label-field-47 {
+  position:absolute;
+  left:591.42px;
+  top:407.60px;
+  font-size:16.92px;
+  text-align:right;
+}
+.label-barcode-48 {
+  position:absolute;
+  left:531.48px;
+  top:127.87px;
+}
+.label-grid-x-0 {
+  left:0.00px;
+}
+.label-grid-x-1 {
+  left:50.00px;
+}
+.label-grid-x-2 {
+  left:100.00px;
+}
+.label-grid-x-3 {
+  left:150.00px;
+}
+.label-grid-x-4 {
+  left:200.00px;
+}
+.label-grid-x-5 {
+  left:250.00px;
+}
+.label-grid-x-6 {
+  left:300.00px;
+}
+.label-grid-x-7 {
+  left:350.00px;
+}
+.label-grid-x-8 {
+  left:400.00px;
+}
+.label-grid-x-9 {
+  left:450.00px;
+}
+.label-grid-x-10 {
+  left:500.00px;
+}
+.label-grid-x-11 {
+  left:550.00px;
+}
+.label-grid-x-12 {
+  left:600.00px;
+}
+.label-grid-y-0 {
+  top:479.53px;
+}
+.label-grid-y-1 {
+  top:429.53px;
+}
+.label-grid-y-2 {
+  top:379.53px;
+}
+.label-grid-y-3 {
+  top:329.53px;
+}
+.label-grid-y-4 {
+  top:279.53px;
+}
+.label-grid-y-5 {
+  top:229.53px;
+}
+.label-grid-y-6 {
+  top:179.53px;
+}
+.label-grid-y-7 {
+  top:129.53px;
+}
+.label-grid-y-8 {
+  top:79.53px;
+}
+.label-grid-y-9 {
+  top:29.53px;
+}
+</style>
+<div class="label-template">
+  <div class="label-field-0">MICROLENS</div>
+  <div class="label-field-1">TL03 / TL04</div>
+  <div class="label-field-2">1250</div>
+  <div class="label-field-3">1008018</div>
+  <div class="label-barcode-4"><pre>(01)08719326771229(17)261231(10)1008018</pre></div>
+  <div class="label-field-5">R</div>
+  <div class="label-field-6">L</div>
+  <div class="label-field-7">R</div>
+  <div class="label-field-8">MICROLENS</div>
+  <div class="label-field-9">R</div>
+  <div class="label-field-10">VLT</div>
+  <div class="label-field-11"></div>
+  <div class="label-field-12">RAD</div>
+  <div class="label-field-13">7.8</div>
+  <div class="label-field-14">PWR</div>
+  <div class="label-field-15">+2</div>
+  <div class="label-field-16">DIA</div>
+  <div class="label-field-17">17.5</div>
+  <div class="label-field-18">SC</div>
+  <div class="label-field-19"></div>
+  <div class="label-field-20">-</div>
+  <div class="label-field-21"></div>
+  <div class="label-field-22">LOT</div>
+  <div class="label-field-23"></div>
+  <div class="label-field-24">EXP</div>
+  <div class="label-field-25"></div>
+  <div class="label-field-26">TL03</div>
+  <div class="label-barcode-27"><pre>(01)08719326771229(17)261231(10)1008018</pre></div>
+  <div class="label-field-28">L</div>
+  <div class="label-field-29">MICROLENS</div>
+  <div class="label-field-30">L</div>
+  <div class="label-field-31">VLT</div>
+  <div class="label-field-32"></div>
+  <div class="label-field-33">RAD</div>
+  <div class="label-field-34">7.8</div>
+  <div class="label-field-35">PWR</div>
+  <div class="label-field-36">+2</div>
+  <div class="label-field-37">DIA</div>
+  <div class="label-field-38">17.5</div>
+  <div class="label-field-39">SC</div>
+  <div class="label-field-40"></div>
+  <div class="label-field-41">-</div>
+  <div class="label-field-42"></div>
+  <div class="label-field-43">LOT</div>
+  <div class="label-field-44"></div>
+  <div class="label-field-45">EXP</div>
+  <div class="label-field-46">261231</div>
+  <div class="label-field-47">TL04</div>
+  <div class="label-barcode-48"><pre>(01)08719326771229(17)261231(10)1008018</pre></div>
+  <div class="label-grid-axis">(0,0)</div>
+  <div class="label-grid-label grid-x label-grid-x-0">0</div>
+  <div class="label-grid-label grid-x label-grid-x-1">50</div>
+  <div class="label-grid-label grid-x label-grid-x-2">100</div>
+  <div class="label-grid-label grid-x label-grid-x-3">150</div>
+  <div class="label-grid-label grid-x label-grid-x-4">200</div>
+  <div class="label-grid-label grid-x label-grid-x-5">250</div>
+  <div class="label-grid-label grid-x label-grid-x-6">300</div>
+  <div class="label-grid-label grid-x label-grid-x-7">350</div>
+  <div class="label-grid-label grid-x label-grid-x-8">400</div>
+  <div class="label-grid-label grid-x label-grid-x-9">450</div>
+  <div class="label-grid-label grid-x label-grid-x-10">500</div>
+  <div class="label-grid-label grid-x label-grid-x-11">550</div>
+  <div class="label-grid-label grid-x label-grid-x-12">600</div>
+  <div class="label-grid-label grid-y label-grid-y-0">0</div>
+  <div class="label-grid-label grid-y label-grid-y-1">50</div>
+  <div class="label-grid-label grid-y label-grid-y-2">100</div>
+  <div class="label-grid-label grid-y label-grid-y-3">150</div>
+  <div class="label-grid-label grid-y label-grid-y-4">200</div>
+  <div class="label-grid-label grid-y label-grid-y-5">250</div>
+  <div class="label-grid-label grid-y label-grid-y-6">300</div>
+  <div class="label-grid-label grid-y label-grid-y-7">350</div>
+  <div class="label-grid-label grid-y label-grid-y-8">400</div>
+  <div class="label-grid-label grid-y label-grid-y-9">450</div>
+</div>

@@ -1,0 +1,129 @@
+<LabelTemplate
+    name="scleral_v4"
+    width="80" 
+    height="60" 
+    baseFont="Swiss 721 Bold BT"
+    units="mm">
+
+  <Meta>
+    <Author>Carsten Bund</Author>
+    <Version>4.1-mm</Version>
+    <Date>2025-11-03</Date>
+    <Description>
+      Millimetre-based scleral label layout derived from historical BASIC template (203 dpi reference).
+      Uses a 3-panel structure:
+        • Box panel: 0–20 mm
+        • Right lens panel: 24–49 mm
+        • Left lens panel: 54–79 mm
+      Total label height: 70 mm ( @ 203 dpi).
+      Origin (0,0) is bottom-left; Y increases upward.
+      Lens sub-grid updated with 2025-11 layout (per PD41 spec sheet: left column labels left-aligned, values right-aligned; second column fully right-aligned).
+    </Description>
+    <Units>mm</Units>
+    <DpiReference>203</DpiReference>
+    <ConversionNote>
+      One dot = 25.4 / DPI mm. 
+      All x/y offsets are expressed in millimetres and converted to printer dots at render time.
+    </ConversionNote>
+  </Meta>
+
+  <!-- BOX LABEL (leftmost section) -->
+  <Group name="box" offsetX="0">
+    <!-- Lens Type Name -->
+    <Field   name="NAAM"    size="10" align="7" dir="4" x="0"   y="0"/>
+    <!-- Lens type -->
+    <Field   name="REFER"   size="8"  align="4" dir="4" x="3.3" y="25"/>
+    <Field   name="KLANTNR" size="8"  align="4" dir="4" x="3.3" y="35"/>
+    <Field   name="BONNR"   size="8"  align="4" dir="4" x="4.8" y="35"/>
+    <!-- Lens identifier barcode -->
+    <Barcode name="UDI"   type="DATAMATRIX" width="2" ratio="1" height="3" size="50" x="5" y="4"/>
+    <!-- Lens identifier box label by Order -->
+    <Field   name="RGT"     size="10" align="4" dir="4" x="1.6" y="40"/>
+    <Field   name="LFT"     size="10" align="4" dir="4" x="1.6" y="35"/>
+  </Group>
+
+
+  <!-- RIGHT LENS PANEL (middle section) -->
+  <Group name="right" offsetx="29">
+    <!-- Top R designator -->
+    <Field   name="RGT" size="5" align="6" dir="1" x="18.7" y="47.2"/>
+    <!-- Lens header -->
+    <Field name="NAAM" size="8" align="5" dir="1" x="7.5"  y="46"/>
+    <Field name="RGT"  size="9" align="4" dir="1" x="14"   y="46"/>
+
+    <!-- Left side lens R descriptor -->
+    <!-- VLT -->
+    <Field name="VLTRLBL" size="5" align="4" dir="1" x="16"   y="25" text="VLT"/>
+    <Field name="VLTR"    size="6" align="6" dir="1" x="16"   y="27.5"/>
+    <!-- RAD -->
+    <Field name="RADRLBL" size="5" align="4" dir="1" x="12.5" y="25" text="RAD"/>
+    <Field name="RADR"    size="6" align="6" dir="1" x="12.5" y="27.5"/>
+    <!-- PWR -->
+    <Field name="DPTRLBL" size="5" align="4" dir="1" x="11"   y="25" text="PWR"/>
+    <Field name="DPTR"    size="6" align="6" dir="1" x="11"   y="27.5"/>
+
+    <!-- DIA -->
+    <Field name="DIARLBL" size="5" align="6" dir="1" x="16"   y="36.8" text="DIA"/>
+    <Field name="DIAR"    size="6" align="6" dir="1" x="16"   y="44.3"/>
+    <!-- SC -->
+    <Field name="SCLRRLBL" size="5" align="6" dir="1" x="12.5" y="36.8" text="SC"/>
+    <Field name="SCLR"     size="6" align="6" dir="1" x="12.5" y="44.3"/>
+    <!-- LZ -->
+    <Field name="LZRRLBL"  size="5" align="6" dir="1" x="11"   y="36.8" text="-"/>
+    <Field name="LZRR"     size="6" align="6" dir="1" x="11"   y="44.3"/>
+
+    <!-- LOT -->
+    <Field name="LOTRLBL"   size="5" align="4" dir="1" x="11"   y="18" text="LOT"/>
+    <Field name="LOTR"      size="6" align="6" dir="1" x="16"   y="18"/>
+    <!-- EXPIRY -->
+    <Field name="DATUMRLBL" size="5" align="4" dir="1" x="11"   y="15" text="EXP"/>
+    <Field name="DATUMR"    size="6" align="6" dir="1" x="16"   y="15"/>
+
+    <!-- Lens identifier code right -->
+    <Field   name="IDR"     size="6" align="6" dir="1" x="16" y="9"/>
+    <Barcode name="UDI"   type="DATAMATRIX" width="2" ratio="1" height="3" size="40" x="8.5" y="44"/>
+  </Group>
+
+
+  <!-- LEFT LENS PANEL (rightmost section) -->
+  <Group name="left" offsetX="58">
+    <!-- Top R designator -->
+    <Field   name="LFT" size="5" align="6" dir="1" x="18.7" y="47.2"/>
+    <!-- Lens header -->
+    <Field name="NAAM" size="8" align="5" dir="1" x="7.5"  y="46"/>
+    <Field name="LFT"  size="9" align="4" dir="1" x="14"   y="46"/>
+
+    <!-- Left side lens R descriptor -->
+    <!-- VLT -->
+    <Field name="VLTRLBL" size="5" align="4" dir="1" x="16"   y="25" text="VLT"/>
+    <Field name="VLTR"    size="6" align="6" dir="1" x="16"   y="27.5"/>
+    <!-- RAD -->
+    <Field name="RADRLBL" size="5" align="4" dir="1" x="12.5" y="25" text="RAD"/>
+    <Field name="RADR"    size="6" align="6" dir="1" x="12.5" y="27.5"/>
+    <!-- PWR -->
+    <Field name="DPTRLBL" size="5" align="4" dir="1" x="11"   y="25" text="PWR"/>
+    <Field name="DPTR"    size="6" align="6" dir="1" x="11"   y="27.5"/>
+s
+    <!-- DIA -->
+    <Field name="DIARLBL" size="5" align="6" dir="1" x="16"   y="36.8" text="DIA"/>
+    <Field name="DIAR"    size="6" align="6" dir="1" x="16"   y="44.3"/>
+    <!-- SC -->
+    <Field name="SCLRRLBL" size="5" align="6" dir="1" x="12.5" y="36.8" text="SC"/>
+    <Field name="SCLR"     size="6" align="6" dir="1" x="12.5" y="44.3"/>
+    <!-- LZ -->
+    <Field name="LZRRLBL"  size="5" align="6" dir="1" x="11"   y="36.8" text="-"/>
+    <Field name="LZRR"     size="6" align="6" dir="1" x="11"   y="44.3"/>
+
+    <!-- LOT -->
+    <Field name="LOTRLBL"   size="5" align="4" dir="1" x="11"   y="18" text="LOT"/>
+    <Field name="LOTR"      size="6" align="6" dir="1" x="16"   y="18"/>
+    <!-- EXPIRY -->
+    <Field name="DATUMRLBL" size="5" align="4" dir="1" x="11"   y="15" text="EXP"/>
+    <Field name="DATUMR"    size="6" align="6" dir="1" x="16"   y="15"/>
+
+    <!-- Lens identifier code right -->
+    <Field   name="IDR"     size="6" align="6" dir="1" x="16" y="9"/>
+    <Barcode name="UDI"   type="DATAMATRIX" width="2" ratio="1" height="3" size="40" x="8.5" y="44"/>
+  </Group>
+
+</LabelTemplate>

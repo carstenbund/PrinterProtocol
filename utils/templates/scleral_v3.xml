@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+<LabelTemplate name="scleral" width="85" height="60" baseFont="Swiss 721 Bold BT" units="mm">
+  <Meta>
+    <Author>Carsten Bund</Author>
+    <Version>3.2-mm</Version>
+    <Date>2025-10-31</Date>
+    <Description>
+      Millimetre-based scleral label layout derived from historical BASIC template (203 dpi reference).
+      Uses a 3-panel structure:
+        • Box panel: 0–29 mm
+        • Right lens panel: 29–58 mm
+        • Left lens panel: 58–87 mm
+      Total label height: 60 mm (~470 dots @ 203 dpi).
+      Origin (0,0) is bottom-left; Y increases upward.
+    </Description>
+    <Units>mm</Units>
+    <DpiReference>203</DpiReference>
+    <ConversionNote>
+      One dot = 25.4 / DPI mm. 
+      All x/y offsets are expressed in millimetres and converted to printer dots at render time.
+    </ConversionNote>
+  </Meta>
+
+  <Group name="box" offsetX="0">
+    <Field type="field" name="NAAM" group="box" font="Swiss 721 Bold BT" size="10" dir="4" align="7" x="0.0" y="0.0"/>
+    <Field type="field" name="REFER" group="box" font="Swiss 721 Bold BT" size="8" dir="4" align="4" x="12.51" y="0.0"/>
+    <Field type="field" name="KLANTNR" group="box" font="Swiss 721 Bold BT" size="8" dir="4" align="4" x="12.51" y="45.04"/>
+    <Field type="field" name="BONNR" group="box" font="Swiss 721 Bold BT" size="8" dir="4" align="4" x="18.77" y="45.04"/>
+    <Barcode name="UDI" type="DATAMATRIX" x="25.02" y="50.05" size="50"/>
+    <Field type="field" name="RGT" group="box" font="Swiss 721 Bold BT" size="10" dir="4" align="4" x="6.26" y="50.05"/>
+    <Field type="field" name="LFT" group="box" font="Swiss 721 Bold BT" size="10" dir="4" align="4" x="6.26" y="45.04"/>
+  </Group>
+
+  <Group name="right" offsetX="29">
+    <Field type="field" name="NAAM" group="right" font="Swiss 721 Bold BT" size="8" dir="1" align="5" x="21.05" y="30.03"/>
+    <Field type="field" name="SUBNAAMR" group="right" font="Swiss 721 Bold BT" size="7" dir="1" align="4" x="8.54" y="25.02"/>
+    <Field type="field" name="SAGRLBL" group="right" font="Swiss 721 Bold BT" size="7" dir="1" align="4" x="8.54" y="20.02"/>
+    <Field type="field" name="RADRLBL" group="right" font="Swiss 721 Bold BT" size="7" dir="1" align="4" x="8.54" y="15.01"/>
+    <Field type="field" name="DPTRLBL" group="right" font="Swiss 721 Bold BT" size="7" dir="1" align="4" x="8.54" y="10.01"/>
+    <Field type="field" name="DIARLBL" group="right" font="Swiss 721 Bold BT" size="7" dir="1" align="4" x="21.05" y="20.02"/>
+    <Field type="field" name="PERIFRLBL" group="right" font="Swiss 721 Bold BT" size="7" dir="1" align="4" x="21.05" y="15.01"/>
+    <Field type="field" name="SAGR" group="right" font="Swiss 721 Bold BT" size="6" dir="1" align="6" x="21.05" y="20.02"/>
+    <Field type="field" name="RADR" group="right" font="Swiss 721 Bold BT" size="6" dir="1" align="6" x="21.05" y="15.01"/>
+    <Field type="field" name="DPTR" group="right" font="Swiss 721 Bold BT" size="6" dir="1" align="6" x="27.31" y="10.01"/>
+    <Field type="field" name="CYLASR" group="right" font="Swiss 721 Bold BT" size="6" dir="1" align="4" x="27.31" y="10.01"/>
+    <Field type="field" name="DIAR" group="right" font="Swiss 721 Bold BT" size="6" dir="1" align="6" x="39.82" y="20.02"/>
+    <Field type="field" name="PERIFR" group="right" font="Swiss 721 Bold BT" size="6" dir="1" align="6" x="39.82" y="15.01"/>
+    <Field type="field" name="BONNR" group="right" font="Swiss 721 Bold BT" size="5" dir="1" align="4" x="14.79" y="5.0"/>
+    <Field type="field" name="EXP" group="right" font="Swiss 721 Bold BT" size="5" dir="1" align="4" x="33.56" y="5.0"/>
+    <Field type="field" name="RGT" group="right" font="Swiss 721 Bold BT" size="7" dir="1" align="6" x="39.82" y="25.02"/>
+    <Field type="field" name="IDR" group="right" font="Swiss 721 Bold BT" size="7" dir="3" align="1" x="39.82" y="60.06"/>
+    <Barcode name="UDI" type="DATAMATRIX" x="8.54" y="30" size="50"/>
+  </Group>
+
+   <Group name="left" offsetX="58">
+     <Field type="field" name="NAAM" group="left" font="Swiss 721 Bold BT" size="8" dir="1" align="5" x="21.05" y="30.03"/>
+     <Field type="field" name="SUBNAAML" group="left" font="Swiss 721 Bold BT" size="7" dir="1" align="4" x="8.54" y="25.02"/>
+     <Field type="field" name="SAGLLBL" group="left" font="Swiss 721 Bold BT" size="7" dir="1" align="4" x="8.54" y="20.02"/>
+     <Field type="field" name="RADLLBL" group="left" font="Swiss 721 Bold BT" size="7" dir="1" align="4" x="8.54" y="15.01"/>
+     <Field type="field" name="DPTLLBL" group="left" font="Swiss 721 Bold BT" size="7" dir="1" align="4" x="8.54" y="10.01"/>
+     <Field type="field" name="DIALLBL" group="left" font="Swiss 721 Bold BT" size="7" dir="1" align="4" x="21.05" y="20.02"/>
+     <Field type="field" name="PERIFLLBL" group="left" font="Swiss 721 Bold BT" size="7" dir="1" align="4" x="21.05" y="15.01"/>
+     <Field type="field" name="SAGL" group="left" font="Swiss 721 Bold BT" size="6" dir="1" align="6" x="21.05" y="20.02"/>
+     <Field type="field" name="RADL" group="left" font="Swiss 721 Bold BT" size="6" dir="1" align="6" x="21.05" y="15.01"/>
+     <Field type="field" name="DPTL" group="left" font="Swiss 721 Bold BT" size="6" dir="1" align="6" x="27.31" y="10.01"/>
+     <Field type="field" name="CYLASL" group="left" font="Swiss 721 Bold BT" size="6" dir="1" align="4" x="27.31" y="10.01"/>
+     <Field type="field" name="DIAL" group="left" font="Swiss 721 Bold BT" size="6" dir="1" align="6" x="39.82" y="20.02"/>
+     <Field type="field" name="PERIFL" group="left" font="Swiss 721 Bold BT" size="6" dir="1" align="6" x="39.82" y="15.01"/>
+     <Field type="field" name="BONNR" group="left" font="Swiss 721 Bold BT" size="5" dir="1" align="4" x="14.79" y="5.0"/>
+     <Field type="field" name="EXP" group="left" font="Swiss 721 Bold BT" size="5" dir="1" align="4" x="33.56" y="5.0"/>
+     <Field type="field" name="LFT" group="left" font="Swiss 721 Bold BT" size="7" dir="1" align="6" x="39.82" y="25.02"/>
+     <Field type="field" name="IDL" group="left" font="Swiss 721 Bold BT" size="7" dir="3" align="1" x="39.82" y="60.06"/>
+     <Barcode name="UDI" type="DATAMATRIX" x="8.54" y="30" size="50"/>
+   </Group>
+</LabelTemplate>
+
+
