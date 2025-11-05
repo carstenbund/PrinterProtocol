@@ -1,3 +1,7 @@
+# label_server.py V1
+# catching a legacy - proprietary string and convert it to pd41 "Direct Print" V10.0
+# sending the direct print commands to the Intermec PD41 printer 
+
 import socket
 import select
 import datetime
