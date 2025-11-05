@@ -1,5 +1,3 @@
-# PrinterProtocol
-
 # Printer Protocol — Cross-Language JSON Printer Abstraction
 
 This project defines a portable printer command protocol shared between
@@ -20,3 +18,13 @@ cd python
 pip install -r requirements.txt
 python examples/emit_example.py
 python examples/run_from_json.py
+```
+
+### C#
+
+```bash
+cd csharp/PrinterProtocol
+dotnet run
+```
+
+Both will render or send the same JSON command stream.

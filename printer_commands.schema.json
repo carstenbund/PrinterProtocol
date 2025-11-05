@@ -1,0 +1,181 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Printer Command Stream",
+  "type": "object",
+  "required": ["version", "commands"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+(\\.\\d+)?$"
+    },
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source": { "type": "string" },
+        "description": { "type": "string" },
+        "createdUtc": { "type": "string", "format": "date-time" }
+      }
+    },
+    "commands": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "args": {
+            "type": "object",
+            "default": {},
+            "additionalProperties": false
+          },
+          "comment": { "type": "string" }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "name": { "const": "Setup" } } },
+            "then": {
+              "properties": {
+                "args": {
+                  "type": "object",
+                  "required": ["name"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "name": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": { "properties": { "name": { "const": "SetFont" } } },
+            "then": {
+              "properties": {
+                "args": {
+                  "type": "object",
+                  "required": ["name", "size"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "name": { "type": "string" },
+                    "size": { "type": "number", "exclusiveMinimum": 0 }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": { "properties": { "name": { "const": "SetAlignment" } } },
+            "then": {
+              "properties": {
+                "args": {
+                  "type": "object",
+                  "required": ["align"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "align": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": { "properties": { "name": { "const": "SetDirection" } } },
+            "then": {
+              "properties": {
+                "args": {
+                  "type": "object",
+                  "required": ["direction"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "direction": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": { "properties": { "name": { "const": "MoveTo" } } },
+            "then": {
+              "properties": {
+                "args": {
+                  "type": "object",
+                  "required": ["x", "y"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "x": { "type": "number" },
+                    "y": { "type": "number" }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": { "properties": { "name": { "const": "DrawText" } } },
+            "then": {
+              "properties": {
+                "args": {
+                  "type": "object",
+                  "required": ["text"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "text": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": { "properties": { "name": { "const": "DrawBarcode" } } },
+            "then": {
+              "properties": {
+                "args": {
+                  "type": "object",
+                  "required": ["value", "type", "width", "ratio", "height", "size"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "value": { "type": "string" },
+                    "type": { "type": "string" },
+                    "width": { "type": "integer", "minimum": 1 },
+                    "ratio": { "type": "integer", "minimum": 1 },
+                    "height": { "type": "integer", "minimum": 1 },
+                    "size": { "type": "integer", "minimum": 1 }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": { "properties": { "name": { "const": "Comment" } } },
+            "then": {
+              "properties": {
+                "args": {
+                  "type": "object",
+                  "required": ["text"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "text": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": { "properties": { "name": { "const": "PrintFeed" } } },
+            "then": {
+              "properties": {
+                "args": {
+                  "type": "object",
+                  "maxProperties": 0,
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
