@@ -127,7 +127,14 @@ def build_label_commands(values: Dict[str, str]) -> Dict[str, object]:
     """Create a simple JSON command sequence based on REGEL$ values."""
 
     emitter = JsonCommandEmitter(source="label_server_v2")
-    emitter.set_layout(width=100, height=75, units="mm", origin="bottom-left", y_direction="up", dpi=203)
+    emitter.set_layout(
+        width=100,
+        height=60,
+        units="mm",
+        origin="bottom-left",
+        y_direction="up",
+        dpi=203,
+    )
 
     emitter.emit("Setup", name="LEGACY_LABEL")
     emitter.emit("SetFont", name="Swiss 721 Bold BT", size=8)
@@ -229,6 +236,15 @@ def run_label_server_v2(
                 payload_json = json.dumps(payload, indent=2)
 
                 driver = create_driver(driver_name, printer_host, dry_run=dry_run)
+                height = float(payload.get("height", 0.0) or 0.0)
+                units = str(payload.get("units", "mm"))
+                raw_dpi = payload.get("dpi")
+                try:
+                    dpi = float(raw_dpi) if raw_dpi is not None else float(driver.get_dpi())
+                except (TypeError, ValueError):
+                    dpi = float(driver.get_dpi())
+                if hasattr(driver, "set_label_context"):
+                    driver.set_label_context(height=height, units=units, dpi=dpi)
                 interpreter = JsonCommandInterpreter(driver)
                 interpreter.run(payload)
 

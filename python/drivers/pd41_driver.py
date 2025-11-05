@@ -1,15 +1,19 @@
 import socket
+
 from printer_protocol import PrinterDriver
 
 
 class PD41Driver(PrinterDriver):
-    """Intermec PD41 driver implementing the PrinterDriver protocol."""
+    """Intermec PD41 printer driver (Y-up coordinate system)."""
 
     def __init__(self, host: str, port: int = 9100, dry_run: bool = True):
+        super().__init__()
         self.host, self.port, self.dry_run = host, port, dry_run
         self.sent: list[str] = []
         self.sock: socket.socket | None = None
         self.dpi = 203.0
+        self.origin = "bottom-left"
+        self.y_direction = "up"
         
     def __enter__(self):
         if not self.dry_run:
@@ -44,15 +48,16 @@ class PD41Driver(PrinterDriver):
         self._send(f'DIR {direction}')
 
     def move_to(self, x, y):
-        x_dev, y_dev = self.to_device_coords(x, y)
-        self._send(f'PRPOS {int(x_dev)},{int(y_dev)}')
+        self._send(f"PRPOS {int(x)},{int(y)}")
 
     def draw_text(self, text):
-        self._send(f'PRTXT "{text}"')
+        safe = text.replace('"', '""')
+        self._send(f'PRTXT "{safe}"')
 
     def draw_barcode(self, value, type, width, ratio, height, size):
         self._send(f'BARSET "{type}",{width},{ratio},{height},{size}')
-        self._send(f'PRBAR "{value}"')
+        safe = value.replace('"', '""')
+        self._send(f'PRBAR "{safe}"')
 
     def comment(self, text):
         self._send(f'REM -- {text} --')

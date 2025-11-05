@@ -23,14 +23,14 @@ from jsonschema import Draft7Validator
 class PrinterDriver(ABC):
     """Abstract base class describing the printer command surface."""
 
-    dpi: float = 203.0
-    units: str = "mm"
-    origin: str = "bottom-left"
-    y_direction: str = "up"
-    label_width: float = 0.0
-    label_height: float = 0.0
-    device_origin: str = "bottom-left"
-    device_y_direction: str = "up"
+    def __init__(self) -> None:
+        # Canonical coordinate definition (bottom-left, Y-up)
+        self.origin: str = "bottom-left"
+        self.y_direction: str = "up"
+        self.label_width: float = 0.0
+        self.label_height: float = 0.0
+        self.units: str = "mm"
+        self.dpi: float = 203.0
 
     def configure_layout(
         self,
@@ -44,24 +44,21 @@ class PrinterDriver(ABC):
         """Store the canonical layout context for coordinate conversion."""
 
         self.label_width = float(width or 0.0)
-        self.label_height = float(height or 0.0)
-        self.units = units
         self.origin = origin
         self.y_direction = y_direction
+        self.set_label_context(height=height, units=units, dpi=self.dpi)
 
     def to_device_coords(self, x: float, y: float) -> tuple[float, float]:
         """Convert canonical coordinates into the driver's device space."""
 
-        canonical_up = self.y_direction.lower() == "up"
-        device_up = self.device_y_direction.lower() == "up"
-        canonical_origin = self.origin.lower()
-        device_origin = self.device_origin.lower()
-        y_val = y
-        if self.label_height and (
-            canonical_up != device_up or canonical_origin != device_origin
-        ):
-            y_val = self.label_height - y
-        return x, y_val
+        return x, y
+
+    def set_label_context(self, height: float, units: str = "mm", dpi: float = 203.0) -> None:
+        """Provide label geometry prior to rendering for coordinate conversion."""
+
+        self.label_height = float(height or 0.0)
+        self.units = units
+        self.dpi = float(dpi)
 
     @abstractmethod
     def setup(self, name: str) -> None:
@@ -241,11 +238,16 @@ class JsonCommandInterpreter:
                 origin=origin,
                 y_direction=y_direction,
             )
-        if "dpi" in data:
+        dpi_value = data.get("dpi")
+        if dpi_value is not None:
             try:
-                self.driver.dpi = float(data["dpi"])  # type: ignore[attr-defined]
+                dpi = float(dpi_value)
             except (TypeError, ValueError):
                 raise ValueError("dpi must be numeric") from None
+            else:
+                self.driver.dpi = dpi  # type: ignore[attr-defined]
+        if hasattr(self.driver, "set_label_context"):
+            self.driver.set_label_context(height=height, units=units, dpi=self.driver.dpi)
 
     def _coerce_payload(self, payload: Mapping[str, Any] | str | Path) -> Mapping[str, Any]:
         if isinstance(payload, Mapping):
