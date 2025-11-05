@@ -2,11 +2,20 @@ from printer_protocol import PrinterDriver
 
 
 class GdiDriverStub(PrinterDriver):
-    """Mock driver simulating graphical output (console only)."""
+    """Mock driver representing a top-left, Y-down coordinate system."""
 
-    device_origin = "top-left"
-    device_y_direction = "down"
-    dpi = 300.0
+    def __init__(self) -> None:
+        super().__init__()
+        self.origin = "top-left"
+        self.y_direction = "down"
+        self.dpi = 96.0
+        self.label_height = 60.0
+
+    def to_device_coords(self, x, y):
+        height = self.label_height or 0.0
+        if not height:
+            return x, y
+        return x, height - y
 
     def setup(self, name):
         print(f"[SETUP] {name}")
@@ -22,7 +31,7 @@ class GdiDriverStub(PrinterDriver):
 
     def move_to(self, x, y):
         x_dev, y_dev = self.to_device_coords(x, y)
-        print(f"[MOVE] {x_dev},{y_dev}")
+        print(f"[MOVE] {x_dev:.1f},{y_dev:.1f}")
 
     def draw_text(self, text):
         print(f"[TEXT] {text}")
