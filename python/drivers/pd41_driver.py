@@ -10,7 +10,7 @@ class PD41Driver(PrinterDriver):
         self.sent: list[str] = []
         self.sock: socket.socket | None = None
         self.dpi = 203.0
-
+        
     def __enter__(self):
         if not self.dry_run:
             self.sock = socket.create_connection((self.host, self.port))
@@ -44,7 +44,8 @@ class PD41Driver(PrinterDriver):
         self._send(f'DIR {direction}')
 
     def move_to(self, x, y):
-        self._send(f'PRPOS {int(x)},{int(y)}')
+        x_dev, y_dev = self.to_device_coords(x, y)
+        self._send(f'PRPOS {int(x_dev)},{int(y_dev)}')
 
     def draw_text(self, text):
         self._send(f'PRTXT "{text}"')

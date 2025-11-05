@@ -9,7 +9,10 @@ public class Pd41Driver : IPrinterDriver, IDisposable
     private readonly TcpClient? _client;
     private readonly StreamWriter _writer;
     private readonly bool _dryRun;
-    private readonly double _dpi = 203.0;
+    private double _dpi = 203.0;
+    private LayoutContext _context = new(0, 0, "mm", "bottom-left", "up", null);
+    private const string DeviceOrigin = "bottom-left";
+    private const string DeviceYDirection = "up";
 
     public Pd41Driver(string host, int port = 9100, bool dryRun = true)
     {
@@ -30,6 +33,15 @@ public class Pd41Driver : IPrinterDriver, IDisposable
         _writer.Write(cmd);
     }
 
+    public void ConfigureLayout(LayoutContext context)
+    {
+        _context = context;
+        if (context.Dpi.HasValue)
+        {
+            _dpi = context.Dpi.Value;
+        }
+    }
+
     public void Setup(string labelName) => Send($"SETUP \"{labelName}\"");
 
     public void SetFont(string name, double size) => Send($"FONT \"{name}\",{(int)size}");
@@ -38,7 +50,11 @@ public class Pd41Driver : IPrinterDriver, IDisposable
 
     public void SetDirection(string dir) => Send($"DIR {dir}");
 
-    public void MoveTo(double x, double y) => Send($"PRPOS {(int)x},{(int)y}");
+    public void MoveTo(double x, double y)
+    {
+        var (xDevice, yDevice) = _context.ToDeviceCoords(DeviceOrigin, DeviceYDirection, x, y);
+        Send($"PRPOS {(int)xDevice},{(int)yDevice}");
+    }
 
     public void DrawText(string text) => Send($"PRTXT \"{text}\"");
 

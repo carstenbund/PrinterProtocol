@@ -8,6 +8,7 @@ namespace PrinterProtocol;
 
 public interface IPrinterDriver
 {
+    void ConfigureLayout(LayoutContext context);
     void Setup(string labelName);
     void SetFont(string name, double size);
     void SetAlignment(string align);
@@ -20,9 +21,64 @@ public interface IPrinterDriver
     double GetDpi();
 }
 
+public readonly record struct LayoutContext(
+    double Width,
+    double Height,
+    string Units,
+    string Origin,
+    string YDirection,
+    double? Dpi)
+{
+    public static LayoutContext FromJson(JsonElement root)
+    {
+        var width = root.TryGetProperty("width", out var widthProp) && widthProp.ValueKind == JsonValueKind.Number
+            ? widthProp.GetDouble()
+            : 0d;
+        var height = root.TryGetProperty("height", out var heightProp) && heightProp.ValueKind == JsonValueKind.Number
+            ? heightProp.GetDouble()
+            : 0d;
+        var units = root.TryGetProperty("units", out var unitsProp) && unitsProp.ValueKind == JsonValueKind.String
+            ? unitsProp.GetString()!
+            : "mm";
+        var origin = root.TryGetProperty("origin", out var originProp) && originProp.ValueKind == JsonValueKind.String
+            ? originProp.GetString()!
+            : "bottom-left";
+        var yDirection = root.TryGetProperty("y_direction", out var yProp) && yProp.ValueKind == JsonValueKind.String
+            ? yProp.GetString()!
+            : "up";
+        double? dpi = null;
+        if (root.TryGetProperty("dpi", out var dpiProp) && dpiProp.ValueKind == JsonValueKind.Number)
+        {
+            dpi = dpiProp.GetDouble();
+        }
+
+        return new LayoutContext(width, height, units, origin, yDirection, dpi);
+    }
+
+    public (double X, double Y) ToDeviceCoords(string deviceOrigin, string deviceYDirection, double x, double y)
+    {
+        var canonicalUp = string.Equals(YDirection, "up", StringComparison.OrdinalIgnoreCase);
+        var deviceUp = string.Equals(deviceYDirection, "up", StringComparison.OrdinalIgnoreCase);
+        var canonicalOrigin = Origin.ToLowerInvariant();
+        var deviceOriginNorm = deviceOrigin.ToLowerInvariant();
+        if (Height > 0 && (canonicalUp != deviceUp || canonicalOrigin != deviceOriginNorm))
+        {
+            return (x, Height - y);
+        }
+
+        return (x, y);
+    }
+}
+
 public class JsonCommandEmitter
 {
     private readonly List<Dictionary<string, object?>> _commands = new();
+    private readonly Dictionary<string, object?> _layout = new()
+    {
+        ["units"] = "mm",
+        ["origin"] = "bottom-left",
+        ["y_direction"] = "up"
+    };
 
     public JsonCommandEmitter(string? source = null, string version = "1.0")
     {
@@ -37,6 +93,25 @@ public class JsonCommandEmitter
     public string Version { get; }
     public Dictionary<string, object?> Document { get; }
     public IReadOnlyList<Dictionary<string, object?>> Commands => _commands;
+
+    public void SetLayout(
+        double width,
+        double height,
+        string units = "mm",
+        string origin = "bottom-left",
+        string yDirection = "up",
+        double? dpi = null)
+    {
+        _layout["width"] = width;
+        _layout["height"] = height;
+        _layout["units"] = units;
+        _layout["origin"] = origin;
+        _layout["y_direction"] = yDirection;
+        if (dpi.HasValue)
+        {
+            _layout["dpi"] = dpi.Value;
+        }
+    }
 
     public JsonCommandEmitter Emit(string name, IDictionary<string, object?>? args = null)
     {
@@ -55,6 +130,10 @@ public class JsonCommandEmitter
             ["version"] = Version,
             ["commands"] = _commands
         };
+        foreach (var kvp in _layout)
+        {
+            payload[kvp.Key] = kvp.Value;
+        }
         if (Document.Count > 0)
         {
             payload["document"] = Document;
@@ -103,6 +182,9 @@ public class JsonCommandInterpreter
 
     public void Run(JsonElement root)
     {
+        var context = LayoutContext.FromJson(root);
+        _driver.ConfigureLayout(context);
+
         if (!root.TryGetProperty("commands", out var commands) || commands.ValueKind != JsonValueKind.Array)
         {
             throw new InvalidDataException("commands array missing from payload");

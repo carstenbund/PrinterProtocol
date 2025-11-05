@@ -24,6 +24,44 @@ class PrinterDriver(ABC):
     """Abstract base class describing the printer command surface."""
 
     dpi: float = 203.0
+    units: str = "mm"
+    origin: str = "bottom-left"
+    y_direction: str = "up"
+    label_width: float = 0.0
+    label_height: float = 0.0
+    device_origin: str = "bottom-left"
+    device_y_direction: str = "up"
+
+    def configure_layout(
+        self,
+        *,
+        width: float,
+        height: float,
+        units: str,
+        origin: str,
+        y_direction: str,
+    ) -> None:
+        """Store the canonical layout context for coordinate conversion."""
+
+        self.label_width = float(width or 0.0)
+        self.label_height = float(height or 0.0)
+        self.units = units
+        self.origin = origin
+        self.y_direction = y_direction
+
+    def to_device_coords(self, x: float, y: float) -> tuple[float, float]:
+        """Convert canonical coordinates into the driver's device space."""
+
+        canonical_up = self.y_direction.lower() == "up"
+        device_up = self.device_y_direction.lower() == "up"
+        canonical_origin = self.origin.lower()
+        device_origin = self.device_origin.lower()
+        y_val = y
+        if self.label_height and (
+            canonical_up != device_up or canonical_origin != device_origin
+        ):
+            y_val = self.label_height - y
+        return x, y_val
 
     @abstractmethod
     def setup(self, name: str) -> None:
@@ -83,6 +121,35 @@ class JsonCommandEmitter:
         if source:
             self.document["source"] = source
         self._commands: list[Dict[str, Any]] = []
+        self._layout: Dict[str, Any] = {
+            "units": "mm",
+            "origin": "bottom-left",
+            "y_direction": "up",
+        }
+
+    def set_layout(
+        self,
+        *,
+        width: float,
+        height: float,
+        units: str = "mm",
+        origin: str = "bottom-left",
+        y_direction: str = "up",
+        dpi: Optional[float] = None,
+    ) -> None:
+        """Define the canonical layout geometry for the payload."""
+
+        self._layout.update(
+            {
+                "width": float(width),
+                "height": float(height),
+                "units": units,
+                "origin": origin,
+                "y_direction": y_direction,
+            }
+        )
+        if dpi is not None:
+            self._layout["dpi"] = float(dpi)
 
     def emit(self, name: str, **kwargs: Any) -> Dict[str, Any]:
         """Append a command entry to the payload."""
@@ -95,6 +162,7 @@ class JsonCommandEmitter:
         """Return the payload as a dictionary."""
 
         payload: Dict[str, Any] = {"version": self.version, "commands": list(self._commands)}
+        payload.update(self._layout)
         if self.document:
             payload["document"] = dict(self.document)
         return payload
@@ -132,6 +200,7 @@ class JsonCommandInterpreter:
         """Execute commands from a mapping, JSON string, or file path."""
 
         data = self._coerce_payload(payload)
+        self._configure_driver(data)
         commands = data.get("commands", [])
         if not isinstance(commands, Iterable):
             raise TypeError("commands collection must be iterable")
@@ -157,6 +226,26 @@ class JsonCommandInterpreter:
             if handler is None:
                 raise KeyError(f"Unsupported command: {name}")
             handler(**dict(args))
+
+    def _configure_driver(self, data: Mapping[str, Any]) -> None:
+        units = str(data.get("units", "mm"))
+        origin = str(data.get("origin", "bottom-left"))
+        y_direction = str(data.get("y_direction", "up"))
+        width = float(data.get("width", 0.0) or 0.0)
+        height = float(data.get("height", 0.0) or 0.0)
+        if hasattr(self.driver, "configure_layout"):
+            self.driver.configure_layout(
+                width=width,
+                height=height,
+                units=units,
+                origin=origin,
+                y_direction=y_direction,
+            )
+        if "dpi" in data:
+            try:
+                self.driver.dpi = float(data["dpi"])  # type: ignore[attr-defined]
+            except (TypeError, ValueError):
+                raise ValueError("dpi must be numeric") from None
 
     def _coerce_payload(self, payload: Mapping[str, Any] | str | Path) -> Mapping[str, Any]:
         if isinstance(payload, Mapping):
