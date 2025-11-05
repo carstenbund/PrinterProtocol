@@ -4,6 +4,10 @@ from printer_protocol import PrinterDriver
 class GdiDriverStub(PrinterDriver):
     """Mock driver simulating graphical output (console only)."""
 
+    device_origin = "top-left"
+    device_y_direction = "down"
+    dpi = 300.0
+
     def setup(self, name):
         print(f"[SETUP] {name}")
 
@@ -17,7 +21,8 @@ class GdiDriverStub(PrinterDriver):
         print(f"[DIR] {direction}")
 
     def move_to(self, x, y):
-        print(f"[MOVE] {x},{y}")
+        x_dev, y_dev = self.to_device_coords(x, y)
+        print(f"[MOVE] {x_dev},{y_dev}")
 
     def draw_text(self, text):
         print(f"[TEXT] {text}")
@@ -32,4 +37,4 @@ class GdiDriverStub(PrinterDriver):
         print("[PRINTFEED]")
 
     def get_dpi(self):
-        return 300.0
+        return self.dpi
