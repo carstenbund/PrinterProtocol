@@ -1,1 +1,1 @@
-scripts in utils are for explanation of functiaality of legacy systems - not in use for PrinterProtocol
+scripts in utils are for explanation of functiality of legacy systems - not in use for PrinterProtocol
