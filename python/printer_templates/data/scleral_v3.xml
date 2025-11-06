@@ -1,0 +1,116 @@
+<LabelTemplate 
+    name="scleral_v3" 
+    width="85" 
+    height="60" 
+    baseFont="Swiss 721 Bold BT"
+    units="mm">
+
+  <Meta>
+    <Author>Carsten Bund</Author>
+    <Version>3.2-mm</Version>
+    <Date>2025-10-31</Date>
+    <Description>
+      Millimetre-based scleral label layout derived from historical BASIC template (203 dpi reference).
+      Uses a 3-panel structure:
+        • Box panel: 0–29 mm
+        • Right lens panel: 29–58 mm
+        • Left lens panel: 58–87 mm
+      Total label height: 60 mm (~470 dots @ 203 dpi).
+      Origin (0,0) is bottom-left; Y increases upward.
+    </Description>
+    <Units>mm</Units>
+    <DpiReference>203</DpiReference>
+    <ConversionNote>
+      One dot = 25.4 / DPI mm. 
+      All x/y offsets are expressed in millimetres and converted to printer dots at render time.
+    </ConversionNote>
+  </Meta>
+
+  <!-- BOX LABEL (leftmost section) -->
+  <Group name="box" offsetX="0">
+    <Field   name="NAAM"    size="10" align="7" dir="4" x="0"   y="25"/>
+    <Field   name="REFER"   size="8"  align="4" dir="4" x="3.3" y="25"/>
+    <Field   name="KLANTNR" size="8"  align="4" dir="4" x="3.3" y="35"/>
+    <Field   name="BONNR"   size="8"  align="4" dir="4" x="4.8" y="35"/>
+    <Barcode name="BONNR"   type="DATAMATRIX" width="2" ratio="1" height="3" size="50" x="6.6" y="40"/>
+    <Field   name="RGT"     size="10" align="4" dir="4" x="1.6" y="40"/>
+    <Field   name="LFT"     size="10" align="4" dir="4" x="1.6" y="35"/>
+  </Group>
+
+
+  <!-- RIGHT LENS PANEL (middle section) -->
+  <Group name="right" offsetX="29">
+    <!--Top Lens indicator, Right -->
+    <Field   name="RGT" size="10" align="4" dir="1" x="8" y="60"/>
+    <!-- Header -->
+    <Field name="NAAM" size="8" align="5" dir="1" x="7.5"  y="46"/>
+    <Field name="RGT"  size="9" align="4" dir="1" x="14"   y="46"/>
+
+    <!-- Row 1 -->
+    <Field name="DIARLBL" size="7" align="4" dir="1" x="6"  y="40" text="Dia."/>
+    <Field name="DIAR"    size="7" align="4" dir="1" x="7.5" y="40"/>
+    <Field name="RADRLBL" size="7" align="4" dir="1" x="12.5" y="40" text="B.C."/>
+    <Field name="RADR"    size="7" align="4" dir="1" x="14"   y="40"/>
+
+    <!-- Row 2 -->
+    <Field name="VLTRLBL" size="7" align="4" dir="1" x="6"  y="36" text="Vlt."/>
+    <Field name="VLTR"    size="7" align="4" dir="1" x="7.5" y="36"/>
+    <Field name="DPTRLBL" size="7" align="4" dir="1" x="12.5" y="36" text="Pwr."/>
+    <Field name="DPTR"    size="7" align="4" dir="1" x="14"   y="36"/>
+
+    <!-- Row 3 -->
+    <Field name="SCLRRLBL" size="7" align="4" dir="1" x="6"  y="32" text="S.C."/>
+    <Field name="SCLR"     size="7" align="4" dir="1" x="7.5" y="32"/>
+    <Field name="LZRRLBL"  size="7" align="4" dir="1" x="12.5" y="32" text="L.Z."/>
+    <Field name="LZRR"     size="7" align="4" dir="1" x="14"   y="32"/>
+
+    <!-- Row 4 -->
+    <Field name="LOTRLBL"   size="7" align="4" dir="1" x="6"  y="28" text="LOT"/>
+    <Field name="BONNR"      size="7" align="4" dir="1" x="7.5" y="28"/>
+    <Field name="DATUMRLBL" size="7" align="4" dir="1" x="12.5" y="28" text="EXP."/>
+    <Field name="DATUMR"    size="7" align="4" dir="1" x="14"   y="28"/>
+
+    <!-- Extras -->
+    <Field   name="IDR"     size="7" align="1" dir="1" x="15" y="10"/>
+    <Barcode name="UDI"   type="DATAMATRIX" width="2" ratio="1" height="3" size="40" x="6" y="50"/>
+  </Group>
+
+
+  <!-- LEFT LENS PANEL (rightmost section) -->
+  <Group name="left" offsetX="58">
+     <!--Top Lens indicator, Left -->
+    <Field   name="LFT" size="10" align="4" dir="1" x="8" y="60"/>
+    <!-- Header -->
+    <Field name="NAAM" size="8" align="5" dir="1" x="7.5"  y="46"/>
+    <Field name="LFT"  size="9" align="4" dir="1" x="14"   y="46"/>
+
+    <!-- Row 1 -->
+    <Field name="DIALLBL" size="7" align="4" dir="1" x="6"  y="40" text="Dia."/>
+    <Field name="DIAL"    size="7" align="4" dir="1" x="7.5" y="40"/>
+    <Field name="RADLLBL" size="7" align="4" dir="1" x="12.5" y="40" text="B.C."/>
+    <Field name="RADL"    size="7" align="4" dir="1" x="14"   y="40"/>
+
+    <!-- Row 2 -->
+    <Field name="VLTLLBL" size="7" align="4" dir="1" x="6"  y="36" text="Vlt."/>
+    <Field name="VLT"     size="7" align="4" dir="1" x="7.5" y="36"/>
+    <Field name="DPTLLBL" size="7" align="4" dir="1" x="12.5" y="36" text="Pwr."/>
+    <Field name="DPTL"    size="7" align="4" dir="1" x="14"   y="36"/>
+
+    <!-- Row 3 -->
+    <Field name="SCLLBL" size="7" align="4" dir="1" x="6"  y="32" text="S.C."/>
+    <Field name="SCL"    size="7" align="4" dir="1" x="7.5" y="32"/>
+    <Field name="LZLLBL" size="7" align="4" dir="1" x="12.5" y="32" text="L.Z."/>
+    <Field name="LZL"    size="7" align="4" dir="1" x="14"   y="32"/>
+
+    <!-- Row 4 -->
+    <Field name="LOTLBL"   size="7" align="4" dir="1" x="6"  y="28" text="LOT"/>
+    <Field name="BONNR"      size="7" align="4" dir="1" x="7.5" y="28"/>
+    <Field name="DATUMLBL" size="7" align="4" dir="1" x="12.5" y="28" text="EXP."/>
+    <Field name="DATUM"    size="7" align="4" dir="1" x="14"   y="28"/>
+
+    <!-- Extras -->
+    <Field   name="IDL"    size="7" align="1" dir="1" x="15" y="10"/>
+    <Barcode name="UDI"  type="DATAMATRIX" width="2" ratio="1" height="3" size="40" x="6" y="50"/>
+  </Group>
+
+</LabelTemplate>

@@ -55,7 +55,7 @@
           "args": {
             "type": "object",
             "default": {},
-            "additionalProperties": false
+            "additionalProperties": true
           },
           "comment": { "type": "string" }
         },

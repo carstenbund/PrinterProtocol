@@ -148,12 +148,13 @@ class JsonCommandEmitter:
         if dpi is not None:
             self._layout["dpi"] = float(dpi)
 
-    def emit(self, name: str, **kwargs: Any) -> Dict[str, Any]:
+    def emit(self, command: str, **kwargs: Any) -> Dict[str, Any]:
         """Append a command entry to the payload."""
 
-        command: Dict[str, Any] = {"name": name, "args": kwargs or {}}
-        self._commands.append(command)
-        return command
+        args = dict(kwargs) if kwargs else {}
+        entry: Dict[str, Any] = {"name": command, "args": args}
+        self._commands.append(entry)
+        return entry
 
     def to_dict(self) -> Dict[str, Any]:
         """Return the payload as a dictionary."""
