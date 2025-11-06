@@ -1,0 +1,1294 @@
+{
+  "version": "1.0",
+  "commands": [
+    {
+      "name": "Setup",
+      "args": {
+        "name": "scleral_v4"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "Lens Type Name"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 10.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "7"
+      }
+    },
+    {
+      "name": "SetDirection",
+      "args": {
+        "direction": "4"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "Demo Lens"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "Lens type"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 8.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "4"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 3.3,
+        "y": 25.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "ORDER-1234"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 3.3,
+        "y": 35.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "CUST-42"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 4.8,
+        "y": 35.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "INV-9001"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "Lens identifier barcode"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 5.0,
+        "y": 4.0
+      }
+    },
+    {
+      "name": "DrawBarcode",
+      "args": {
+        "value": "010999999999999917260101",
+        "type": "DATAMATRIX",
+        "width": 2,
+        "ratio": 1,
+        "height": 3,
+        "size": 50
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "Lens identifier box label by Order"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 10.0
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 1.6,
+        "y": 40.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "R"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 1.6,
+        "y": 35.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "L"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "Top R designator"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 5.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "6"
+      }
+    },
+    {
+      "name": "SetDirection",
+      "args": {
+        "direction": "1"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 47.7,
+        "y": 47.2
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "R"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "Lens header"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 8.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "5"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 36.5,
+        "y": 46.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "Demo Lens"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 9.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "4"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 43.0,
+        "y": 46.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "R"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "Left side lens R descriptor"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "VLT"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 5.0
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 45.0,
+        "y": 25.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "VLT"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 6.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "6"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 45.0,
+        "y": 27.5
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "14.2"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "RAD"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 5.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "4"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 41.5,
+        "y": 25.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "RAD"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 6.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "6"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 41.5,
+        "y": 27.5
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "8.6"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "PWR"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 5.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "4"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 40.0,
+        "y": 25.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "PWR"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 6.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "6"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 40.0,
+        "y": 27.5
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "-1.25"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "DIA"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 5.0
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 45.0,
+        "y": 36.8
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "DIA"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 6.0
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 45.0,
+        "y": 44.3
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "15.0"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "SC"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 5.0
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 41.5,
+        "y": 36.8
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "SC"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 6.0
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 41.5,
+        "y": 44.3
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "42"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "LZ"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 5.0
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 40.0,
+        "y": 36.8
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "-"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 6.0
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 40.0,
+        "y": 44.3
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "MED"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "LOT"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 5.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "4"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 40.0,
+        "y": 18.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "LOT"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 6.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "6"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 45.0,
+        "y": 18.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "LOT-123"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "EXPIRY"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 5.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "4"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 40.0,
+        "y": 15.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "EXP"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 6.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "6"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 45.0,
+        "y": 15.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "2026-12"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "Lens identifier code right"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 45.0,
+        "y": 9.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "RX-001"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 37.5,
+        "y": 44.0
+      }
+    },
+    {
+      "name": "DrawBarcode",
+      "args": {
+        "value": "010999999999999917260101",
+        "type": "DATAMATRIX",
+        "width": 2,
+        "ratio": 1,
+        "height": 3,
+        "size": 40
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "Top R designator"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 5.0
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 76.7,
+        "y": 47.2
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "L"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "Lens header"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 8.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "5"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 65.5,
+        "y": 46.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "Demo Lens"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 9.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "4"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 72.0,
+        "y": 46.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "L"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "Left side lens R descriptor"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "VLT"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 5.0
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 74.0,
+        "y": 25.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "VLT"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 6.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "6"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 74.0,
+        "y": 27.5
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "14.2"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "RAD"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 5.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "4"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 70.5,
+        "y": 25.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "RAD"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 6.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "6"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 70.5,
+        "y": 27.5
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "8.6"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "PWR"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 5.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "4"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 69.0,
+        "y": 25.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "PWR"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 6.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "6"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 69.0,
+        "y": 27.5
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "-1.25"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "DIA"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 5.0
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 74.0,
+        "y": 36.8
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "DIA"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 6.0
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 74.0,
+        "y": 44.3
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "15.0"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "SC"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 5.0
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 70.5,
+        "y": 36.8
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "SC"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 6.0
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 70.5,
+        "y": 44.3
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "42"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "LZ"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 5.0
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 69.0,
+        "y": 36.8
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "-"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 6.0
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 69.0,
+        "y": 44.3
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "MED"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "LOT"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 5.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "4"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 69.0,
+        "y": 18.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "LOT"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 6.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "6"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 74.0,
+        "y": 18.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "LOT-123"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "EXPIRY"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 5.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "4"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 69.0,
+        "y": 15.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "EXP"
+      }
+    },
+    {
+      "name": "SetFont",
+      "args": {
+        "name": "Swiss 721 Bold BT",
+        "size": 6.0
+      }
+    },
+    {
+      "name": "SetAlignment",
+      "args": {
+        "align": "6"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 74.0,
+        "y": 15.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "2026-12"
+      }
+    },
+    {
+      "name": "Comment",
+      "args": {
+        "text": "Lens identifier code right"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 74.0,
+        "y": 9.0
+      }
+    },
+    {
+      "name": "DrawText",
+      "args": {
+        "text": "RX-001"
+      }
+    },
+    {
+      "name": "MoveTo",
+      "args": {
+        "x": 66.5,
+        "y": 44.0
+      }
+    },
+    {
+      "name": "DrawBarcode",
+      "args": {
+        "value": "010999999999999917260101",
+        "type": "DATAMATRIX",
+        "width": 2,
+        "ratio": 1,
+        "height": 3,
+        "size": 40
+      }
+    },
+    {
+      "name": "PrintFeed",
+      "args": {}
+    }
+  ],
+  "units": "mm",
+  "origin": "bottom-left",
+  "y_direction": "up",
+  "width": 80.0,
+  "height": 60.0,
+  "dpi": 203.0,
+  "document": {
+    "source": "scleral_v4.xml",
+    "description": "version 4.1-mm by Carsten Bund (2025-11-03) -- Millimetre-based scleral label layout derived from historical BASIC template (203 dpi reference). Uses a 3-panel structure: \u2022 Box panel: 0\u201320 mm \u2022 Right lens panel: 24\u201349 mm \u2022 Left lens panel: 54\u201379 mm Total label height: 70 mm ( @ 203 dpi). Origin (0,0) is bottom-left; Y increases upward. Lens sub-grid updated with 2025-11 layout (per PD41 spec sheet: left column labels left-aligned, values right-aligned; second column fully right-aligned)."
+  }
+}

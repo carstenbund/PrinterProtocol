@@ -1,5 +1,11 @@
 import json
+import sys
 from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PYTHON_SRC = PROJECT_ROOT / "python"
+if str(PYTHON_SRC) not in sys.path:
+    sys.path.insert(0, str(PYTHON_SRC))
 
 from drivers.gdi_driver_stub import GdiDriverStub
 from printer_protocol import JsonCommandInterpreter

@@ -24,7 +24,8 @@ PYTHON_SRC = PROJECT_ROOT / "python"
 if str(PYTHON_SRC) not in sys.path:
     sys.path.insert(0, str(PYTHON_SRC))
 
-from printer_protocol import JsonCommandEmitter, JsonCommandInterpreter
+from printer_protocol import JsonCommandInterpreter
+from printer_templates import list_templates, render_template
 from drivers.pd41_driver import PD41Driver
 from drivers.gdi_driver_stub import GdiDriverStub
 
@@ -123,45 +124,10 @@ def is_valid_regel(data: str) -> bool:
 # ------------------------------------------------------
 #  Rendering abstraction (values → JSON commands)
 # ------------------------------------------------------
-def build_label_commands(values: Dict[str, str]) -> Dict[str, object]:
-    """Create a simple JSON command sequence based on REGEL$ values."""
+def build_label_commands(values: Dict[str, str], *, template_name: str) -> Dict[str, object]:
+    """Render a REGEL$ payload using a registered label template."""
 
-    emitter = JsonCommandEmitter(source="label_server_v2")
-    emitter.set_layout(
-        width=100,
-        height=60,
-        units="mm",
-        origin="bottom-left",
-        y_direction="up",
-        dpi=203,
-    )
-
-    emitter.emit("Setup", name="LEGACY_LABEL")
-    emitter.emit("SetFont", name="Swiss 721 Bold BT", size=8)
-    emitter.emit("MoveTo", x=5, y=65)
-    emitter.emit("DrawText", text=values.get("NAAM", ""))
-    emitter.emit("MoveTo", x=5, y=55)
-    emitter.emit("DrawText", text=values.get("REFER", ""))
-
-    udi_value = values.get("UDI", "")
-    if udi_value:
-        emitter.emit(
-            "MoveTo",
-            x=5,
-            y=20,
-        )
-        emitter.emit(
-            "DrawBarcode",
-            value=udi_value,
-            type="DATAMATRIX",
-            width=2,
-            ratio=1,
-            height=3,
-            size=80,
-        )
-
-    emitter.emit("PrintFeed")
-    return emitter.to_dict()
+    return render_template(template_name, values)
 
 
 # ------------------------------------------------------
@@ -192,6 +158,7 @@ def run_label_server_v2(
     printer_host: str,
     *,
     driver_name: str = "pd41",
+    template_name: str = "scleral_v4",
     dry_run: bool,
     host: str = "0.0.0.0",
     port: int = 9100,
@@ -232,7 +199,7 @@ def run_label_server_v2(
                 ts = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
                 print(f"[+] Parsed label TYPE={values.get('TYPE')} len={len(text)}")
 
-                payload = build_label_commands(values)
+                payload = build_label_commands(values, template_name=template_name)
                 payload_json = json.dumps(payload, indent=2)
 
                 driver = create_driver(driver_name, printer_host, dry_run=dry_run)
@@ -271,6 +238,8 @@ def run_label_server_v2(
 #  CLI entrypoint
 # ------------------------------------------------------
 def main() -> None:
+    templates = list(list_templates())
+
     parser = argparse.ArgumentParser(
         description="Label Server v2 (REGEL parser + JSON printer protocol)",
     )
@@ -280,6 +249,15 @@ def main() -> None:
     parser.add_argument("--outdir", default="out_v2", help="Output directory for logs/files")
     parser.add_argument("--host", default="0.0.0.0", help="Bind address")
     parser.add_argument("--port", type=int, default=9100, help="Listening port")
+    if templates:
+        parser.add_argument(
+            "--template",
+            choices=sorted(templates),
+            default="scleral_v4",
+            help="Label template to use for rendering",
+        )
+    else:  # pragma: no cover - defensive fallback when no templates registered
+        parser.add_argument("--template", default="scleral_v4", help="Label template to use for rendering")
     args = parser.parse_args()
 
     try:
@@ -287,6 +265,7 @@ def main() -> None:
             out_dir=Path(args.outdir),
             printer_host=args.printer,
             driver_name=args.driver,
+            template_name=args.template,
             dry_run=args.dry,
             host=args.host,
             port=args.port,
